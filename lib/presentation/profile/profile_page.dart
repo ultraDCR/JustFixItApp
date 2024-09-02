@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:just_fix_it/core/routing/app_router.dart';
 import 'package:just_fix_it/presentation/home/dashboard_page.dart';
+import 'package:just_fix_it/shared/components/gap.dart';
 import 'package:just_fix_it/shared/extensions/context_extensions.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -8,25 +10,25 @@ class ProfileScreen extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // Profile Information
-          const Card(
+           Card(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(8.0),
               child: Row(
                 children: [
                   CircleAvatar(
                     radius: 30,
-                    child: Icon(Icons.person, size: 30),
+                    child: Image.asset("assets/images/profile2.png", width: 40,height: 40,),
                   ),
-                  SizedBox(width: 20),
-                  Expanded(
+                  const Gap.horizontal(width: 20),
+                  const Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Name: Hira Bdr. Rana Kaucha',
-                            style: TextStyle(fontSize:16,fontWeight: FontWeight.bold)),
+                            style: TextStyle(fontSize:18,fontWeight: FontWeight.bold)),
                         Text('Email: hirakaucha1234@gmail.com',
                             style: TextStyle(fontSize: 14)),
                         Text('Gender: Male', style: TextStyle(fontSize: 14)),
@@ -40,11 +42,37 @@ class ProfileScreen extends StatelessWidget {
           SizedBox(height: 20),
 
           // Profile Actions
-          ActionButton(text: 'My Request', onPressed: () {}),
-          ActionButton(text: 'Change Password', onPressed: () {}),
-          ActionButton(text: 'Reviews', onPressed: () {}),
-          ActionButton(text: 'Logout', onPressed: () {}),
+          CommonButton(title:"My Request", onTap: (){
+            Navigator.pushNamed(context, AppRouter.serviceHistory);
+          }),
+          CommonButton(title:"Change Password", onTap: (){}),
+          CommonButton(title:"Reviews", onTap: (){}),
+          CommonButton(title:"Logout", color: context.colorScheme.error, onTap: (){}),
+
         ],
+      ),
+    );
+  }
+}
+
+class CommonButton extends StatelessWidget {
+  final String? title;
+  final VoidCallback? onTap;
+  final Color? color;
+  const CommonButton({
+    super.key, required this.title, this.onTap, this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+            color: color ?? context.colorScheme.primary,
+            padding: const EdgeInsets.all(16),
+            child: Expanded(child: Text(title ?? "",textAlign: TextAlign.center,style: context.textTheme.bodyLarge?.copyWith(color: context.colorScheme.onPrimary,),))),
       ),
     );
   }

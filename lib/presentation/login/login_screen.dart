@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:just_fix_it/core/routing/app_router.dart';
 import 'package:just_fix_it/core/theme/dimens.dart';
 import 'package:just_fix_it/data/network_service.dart';
 import 'package:just_fix_it/data/repositories/auth_repository.dart';
@@ -54,72 +55,105 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Scaffold(
         appBar: AppBar(toolbarHeight: 0),
         body: SafeArea(
-          child: ListView(
-            padding: const EdgeInsets.all(Dimens.spacing),
-            children: [
-              const Gap.vertical(height: Dimens.tripleSpacing),
-              Text(
-                login_title,
-                style: context.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-              ),
-              const Gap.vertical(height: Dimens.doubleSpacing),
-              CircleAvatar(
-                radius: 50,
-                backgroundColor: Colors.green.shade100,
-                child: Image.asset('assets/logo.png'), // replace with your logo image
-              ),
-              AutofillGroup(
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Input(
-                        autofillHints: const [AutofillHints.email],
-                        controller: _emailController,
-                        labelText: login_emailLabel,
-                        hintText:  login_emailHint,
-                        onChanged: (l){},
-                        textInputAction: TextInputAction.next,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Gap.vertical(height: Dimens.tripleSpacing),
+                  CircleAvatar(
+                    radius: 50,
+                    backgroundColor: Colors.green.shade100,
+                    child: Image.asset('assets/logo.png'), // replace with your logo image
+                  ),
+                  SizedBox(height: 20),
+            
+                  // SignUp Text
+                  Text(
+                    'Login',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey.shade700,
+                    ),
+                  ),
+                  SizedBox(height: 30),
+                  AutofillGroup(
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Input(
+                            autofillHints: const [AutofillHints.email],
+                            controller: _emailController,
+                            labelText: login_emailLabel,
+                            hintText:  login_emailHint,
+                            onChanged: (l){},
+                            textInputAction: TextInputAction.next,
+                          ),
+                          const Gap.vertical(height: Dimens.spacing),
+                          Input(
+                            autofillHints: const [AutofillHints.password],
+                            controller: _passwordController,
+                            isPassword: !_isPasswordVisible,
+                            labelText:  login_passwordLabel,
+                            hintText:  login_passwordHint,
+                            onChanged: (l){},
+                            textInputAction: TextInputAction.done,
+                            suffixIcon: IconButton(
+                              onPressed: () => setState(() => _isPasswordVisible = !_isPasswordVisible),
+                              icon: Icon(
+                                _isPasswordVisible ? IconsaxPlusBroken.eye : IconsaxPlusBroken.eye_slash,
+                                color: context.colorScheme.onSurface,
+                              ),
+                            ),
+                            onSubmitted: (_) => _onLogin(),
+                          ),
+                        ],
                       ),
-                      const Gap.vertical(height: Dimens.spacing),
-                      Input(
-                        autofillHints: const [AutofillHints.password],
-                        controller: _passwordController,
-                        isPassword: !_isPasswordVisible,
-                        labelText:  login_passwordLabel,
-                        hintText:  login_passwordHint,
-                        onChanged: (l){},
-                        textInputAction: TextInputAction.done,
-                        suffixIcon: IconButton(
-                          onPressed: () => setState(() => _isPasswordVisible = !_isPasswordVisible),
-                          icon: Icon(
-                            _isPasswordVisible ? IconsaxPlusBroken.eye : IconsaxPlusBroken.eye_slash,
-                            color: context.colorScheme.onSurface,
+                    ),
+                  ),
+                  const Gap.vertical(height: Dimens.spacing),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () {},
+                      child: Text( login_forgotPasswordLabel),
+                    ),
+                  ),
+                  const Gap.vertical(height: Dimens.spacing),
+                  Button.primary(
+                    title:  login_submitBtnLabel,
+                    onPressed: _onLogin,
+                  ),
+                  const Gap.vertical(height: Dimens.doubleSpacing),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Don't have account?",
+                        style: TextStyle(
+                          color: Colors.grey.shade600,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, AppRouter.signup);
+                        },
+                        child: Text(
+                          'SignUp',
+                          style: TextStyle(
+                            color: Colors.green.shade700,
                           ),
                         ),
-                        onSubmitted: (_) => _onLogin(),
                       ),
                     ],
                   ),
-                ),
+                ],
               ),
-              const Gap.vertical(height: Dimens.spacing),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () {},
-                  child: Text( login_forgotPasswordLabel),
-                ),
-              ),
-              const Gap.vertical(height: Dimens.spacing),
-              Button.primary(
-                title:  login_submitBtnLabel,
-                onPressed: _onLogin,
-              ),
-              const Gap.vertical(height: Dimens.doubleSpacing),
-
-            ],
+            ),
           ),
         ),
       ),

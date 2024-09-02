@@ -13,6 +13,9 @@ const String login_forgotPasswordLabel= "Forgot password?";
 const String login_googleBtnLabel= "Sign in with Google";
 const String login_appleBtnLabel= "Sign in with Apple";
 const String login_submitBtnLabel= "Login";
+const String signup_submitBtnLabel= "Signup";
+const String signup_fullnameLabel= "FullName";
+const String signup_confirmPassLabel= "Confirm Password";
 
 const String loadingDialog_content= "Please wait...";
 

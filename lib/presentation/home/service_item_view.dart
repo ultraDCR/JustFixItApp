@@ -5,7 +5,8 @@ import 'package:just_fix_it/presentation/home/dashboard_page.dart';
 import 'package:just_fix_it/shared/extensions/context_extensions.dart';
 
 class ServiceItemView extends StatefulWidget {
-  const ServiceItemView({super.key});
+  final String? image;
+  const ServiceItemView({super.key, this.image});
 
   @override
   State<ServiceItemView> createState() => _ServiceItemViewState();
@@ -16,7 +17,7 @@ class _ServiceItemViewState extends State<ServiceItemView> {
   Widget build(BuildContext context) {
     return Card(
       color: context.colorScheme.onPrimary,
-      margin: const EdgeInsets.all(Dimens.minSpacing),
+      margin: const EdgeInsets.only(left: Dimens.spacing,right: Dimens.spacing,top: Dimens.spacing),
       child: InkWell(
         onTap: (){
           Navigator.pushNamed(
@@ -26,7 +27,7 @@ class _ServiceItemViewState extends State<ServiceItemView> {
           padding: const EdgeInsets.all(Dimens.halfSpacing),
           child: Column(
             children: [
-                  Image.asset("assets/images/logo.png",width: 80, height: 80,),
+                  AspectRatio(aspectRatio:16/9,child: Image.asset(widget.image ?? "assets/images/logo.png",width: 160, height: 90,)),
                   Column(
                     children: [
                       Text(style: context.textTheme.titleMedium,"Ranjans plumbing services"),

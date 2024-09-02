@@ -60,7 +60,7 @@ class _MyAppState extends State<MyApp> {
 
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
-        initialRoute: AppRouter.home,
+        initialRoute: AppRouter.login,
         onGenerateRoute: AppRouter.onGenerateRoute,
         onGenerateInitialRoutes: (String initialRouteName) {
           return [

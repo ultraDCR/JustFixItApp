@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:just_fix_it/ServicesPage.dart';
+import 'package:just_fix_it/core/routing/app_router.dart';
+import 'package:just_fix_it/presentation/service/services_page.dart';
 import 'package:just_fix_it/presentation/home/home_page.dart';
 import 'package:just_fix_it/presentation/profile/profile_page.dart';
+import 'package:just_fix_it/shared/components/gap.dart';
 import 'package:just_fix_it/shared/extensions/context_extensions.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -25,19 +27,28 @@ class _DashboardPageState extends State<DashboardPage> {
     return Scaffold (
       appBar:  AppBar(
         title: Padding(
-          padding: const EdgeInsets.only( left: 8.0,right: 8.0,bottom: 10),
+          padding: const EdgeInsets.only( left: 8.0,right: 8.0,bottom: 10,top: 20),
           child: Row(
             children: [
-              Image.asset("assets/images/logo.png", width: 40,height: 40,),
+              Image.asset("assets/images/logo.png", width: 50,height: 50,),
+              const Gap.horizontal(width: 10),
               Expanded(
-                child: SizedBox(
-                  height: 45,
-                  child: TextField(
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.search),
-                      hintText: 'Search',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
+                child: InkWell(
+                  onTap: (){
+                    Navigator.pushNamed(
+                        context,AppRouter.serviceSearch);
+                  },
+                  child: SizedBox(
+                    height: 45,
+                    child: TextField(
+                      enabled: false,
+                      style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
+                      decoration: InputDecoration(
+                        prefixIcon:  Image.asset("assets/images/search.png"),
+                        hintText: 'Search',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                       ),
                     ),
                   ),
@@ -60,7 +71,7 @@ class _DashboardPageState extends State<DashboardPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             BottomNavItem(
-              icon: 'assets/images/logo.png',
+              icon: 'assets/images/home.png',
               title: 'Home',
               onItemClick: () {
                 print(pageSelected);
@@ -73,7 +84,7 @@ class _DashboardPageState extends State<DashboardPage> {
               isSelected:pageSelected == 0,
             ),
             BottomNavItem(
-              icon: 'assets/images/logo.png',
+              icon: 'assets/images/services.png',
               title: 'Services',
               onItemClick: () {
                 print(pageSelected);
@@ -88,7 +99,7 @@ class _DashboardPageState extends State<DashboardPage> {
               isSelected:pageSelected == 1,
             ),
             BottomNavItem(
-              icon: 'assets/images/logo.png',
+              icon: 'assets/images/profile.png',
               title: 'Profile',
               onItemClick: () {
                 print(pageSelected);
@@ -144,6 +155,7 @@ class BottomNavItem extends StatelessWidget {
                 icon,
                 width: 44,
                 height: 44,
+                color: isSelected ? context.colorScheme.primary : context.colorScheme.secondary,
               ),
               const SizedBox(
                 height: 10,
