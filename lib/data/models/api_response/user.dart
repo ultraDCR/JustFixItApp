@@ -2,80 +2,43 @@
 class User {
   User({
     this.id,
-    this.name,
+    this.fullname,
     this.email,
-    this.phone,
     this.address,
-    this.dob,
-    this.gender,
-    this.avatar,
+    this.userType,
+    this.registrationDate,
 
   });
 
   User.fromJson(dynamic json) {
-    id = json['id'];
-    name = json['name'];
+    id = json['_id'];
+    fullname = json['fullname'];
     email = json['email'];
-    phone = json['phone'];
     address = json['address'];
-    dob = json['dob'];
-    gender = json['gender'];
-    avatar = json['avatar'];
+    userType = json['user_type'];
+    registrationDate = json['registrationdate'];
 
   }
-  int? id;
-  String? name;
+  String? id;
+  String? fullname;
   String? email;
-  String? phone;
   String? address;
-  String? dob;
-  String? gender;
-  String? avatar;
+  String? userType;
+  String? registrationDate;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['id'] = id;
-    map['name'] = name;
+    map['_id'] = id;
+    map['fullname'] = fullname;
     map['email'] = email;
-    map['phone'] = phone;
     map['address'] = address;
-    map['dob'] = dob;
-    map['gender'] = gender;
-    map['avatar'] = avatar;
+    map['user_type'] = userType;
+    map['registrationdate'] = registrationDate;
     return map;
   }
 
   @override
   String toString() {
-    return 'User{id: $id, name: $name, email: $email, phone: $phone, address: $address, dob: $dob, gender: $gender, avatar: $avatar}';
-  }
-}
-class Collaboration {
-  Collaboration({
-
-    this.image,
-
-  });
-
-  Collaboration.fromJson(dynamic json) {
-
-    image = json['image'];
-   
-  }
-  String? image;
-  
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-
-    map['image'] = image;
-   
-
-    return map;
-  }
-
-  @override
-  String toString() {
-    return 'Collaboration{ image: $image, }';
+    return 'User{id: $id, fullname: $fullname, email: $email, address: $address, userType: $userType, registrationDate: $registrationDate}';
   }
 }

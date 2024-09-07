@@ -1,25 +1,18 @@
 import 'dart:convert';
 
+import 'package:just_fix_it/data/models/api_response/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharePreferenceUtils {
   static const String userInfoPref = "user_info";
   static const String tokenPref = "token";
+  static const String userTypePref = "user_type";
   static const String isAuthorizePref = "isAuthorize";
   static const String notificationCountPref = "notification_count";
   static const String notificationDataPref = "notification_data";
   static const String newUserDismissPref = "new_user_dismiss";
 
   late final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
-
-
-
-
-
-
-
-
 
   Future<bool> setToken(String token) async {
     final SharedPreferences prefs = await _prefs;
@@ -36,36 +29,32 @@ class SharePreferenceUtils {
     return prefs.remove(tokenPref);
   }
 
-  Future<bool> setNotificationCount() async {
+  Future<String> getUserType() async {
     final SharedPreferences prefs = await _prefs;
-    var count = await getNotificationCount();
-    var newCount = count + 1;
-    return prefs.setInt(notificationCountPref, newCount);
+    return (prefs.getString(userTypePref)) ?? "";
   }
 
-  Future<int> getNotificationCount() async {
+  Future<bool?> setUserType(String userType) async {
     final SharedPreferences prefs = await _prefs;
-    return (prefs.getInt(notificationCountPref)) ?? 0;
+    return prefs.setString(userTypePref, userType);
   }
 
-  Future<bool?> removeNotificationCount() async {
+  Future<User?> getUserData() async {
     final SharedPreferences prefs = await _prefs;
-    return prefs.remove(notificationCountPref);
+    final String? userInfoData = prefs.getString(userInfoPref);
+
+    return (userInfoData != null)
+        ? User.fromJson(json.decode(userInfoData))
+        : null;
   }
 
-  Future<bool> setNotificationData(String data) async {
+  Future<bool> setUserData(User userInfo) async {
     final SharedPreferences prefs = await _prefs;
-    return prefs.setString(notificationDataPref, data);
+
+    var userString = json.encode(userInfo.toJson());
+    return prefs.setString(userInfoPref, userString);
   }
 
-  Future<String?> getNotificationData() async {
-    final SharedPreferences prefs = await _prefs;
-    return (prefs.getString(notificationDataPref));
-  }
 
-  Future<bool?> removeNotificationData() async {
-    final SharedPreferences prefs = await _prefs;
-    return prefs.remove(notificationDataPref);
-  }
 
 }

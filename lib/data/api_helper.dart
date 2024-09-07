@@ -108,6 +108,57 @@ class ApiBaseHelper {
     return responseJson;
   }
 
+  Future<dynamic> put({required String url, Object? body}) async {
+    var responseJson;
+    try {
+      String? token = await SharePreferenceUtils().getToken();
+      if (kDebugMode) {
+        print("Url: $url");
+      }
+      if (kDebugMode) {
+        print("Body: $body");
+      }
+      // print("api token : $token");
+      Map<String, String> headers = {
+        "content-type": "application/json",
+        paramAuthorization: "Bearer $token"
+      };
+
+      final response = await http.put(Uri.parse(baseUrl + url),
+          body: jsonEncode(body), headers: headers);
+      responseJson = _returnResponse(response);
+    } on SocketException {
+      throw FetchDataException('No Internet connection');
+    }
+    return responseJson;
+  }
+
+  Future<dynamic> patch({required String url, Object? body}) async {
+    var responseJson;
+    try {
+      String? token = await SharePreferenceUtils().getToken();
+      if (kDebugMode) {
+        print("Url: $url");
+      }
+      if (kDebugMode) {
+        print("Body: $body");
+      }
+      // print("api token : $token");
+      Map<String, String> headers = {
+        "content-type": "application/json",
+        paramAuthorization: "Bearer $token"
+      };
+
+      final response = await http.patch(Uri.parse(baseUrl + url),
+          body: jsonEncode(body), headers: headers);
+      responseJson = _returnResponse(response);
+    } on SocketException {
+      throw FetchDataException('No Internet connection');
+    }
+    return responseJson;
+  }
+
+
 
   Future<dynamic> multiPartPost(
       {required String url,
@@ -326,16 +377,22 @@ class ApiBaseHelper {
   }
 }
 
-const baseUrl = "https://www.api.foreveryng.com/";
+const baseUrl = "http://192.168.1.4:3001/";
+// const baseUrl = "http://172.16.138.88:3001/";
+// const baseUrl = "http://172.16.143.162:3001/";
 // //Live
 
 
 
 //EndPoints
 const homeAPI = "api/home";
-const productAPI = "api/product";
-const loginAPI = "api/loginUser";
-const registerUserAPI = "api/registerUser";
+const getCurrentUserAPI = "api/user/currentuserdata";
+const updateCurrentUserAPI = "api/user/updatecurrentuser";
+const loginAPI = "api/auth/login";
+const signupAPI = "api/auth/signup";
+const servicesAPI = "api/services";
+const createRequestAPI = "api/createrequest";
+const imageUrl = "${baseUrl}api/services/image/";
 
 
 
@@ -348,15 +405,21 @@ const paramAddress = "address";
 const paramAddressTitle = "title";
 const paramCityId = "city_id";
 const paramIsDefault = "is_default";
-const paramName = "name";
+const paramName = "fullname";
+const paramDescription = "description";
+const paramPrice = "price";
+const paramImage = "image";
 const paramPhone = "phone";
 const paramOtp = "token";
 const paramPhoneAlt = "phone_alt";
 const paramDeliveryAddressId = "delivery_address_id";
 const paramEmail = "email";
 const paramPassword = "password";
+const paramUserType = "user_type";
 const paramClient = "client";
 const paramFcmToken = "fcm_token";
 const paramInitialCode = "initial_code";
 const paramPasswordConfirmation = "password_confirmation";
 const paramPlatform = 'platform';
+const paramServiceId = 'serviceId';
+const paramStatus = 'status';

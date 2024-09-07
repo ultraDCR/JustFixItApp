@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_fix_it/data/network_service.dart';
 import 'package:just_fix_it/data/repositories/auth_repository.dart';
+import 'package:just_fix_it/data/repositories/service_repository.dart';
 
 import 'core/routing/app_router.dart';
 import 'core/theme/app_theme.dart';
@@ -13,8 +14,9 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   var _networkServices = NetworkService.instance;
   var _authRepository = AuthRepository(networkService: _networkServices);
+  var _serviceRepository = ServiceRepository(networkService: _networkServices);
 
-  runApp(MyApp(authRepository: _authRepository));
+  runApp(MyApp(authRepository: _authRepository,serviceRepository: _serviceRepository));
 
 }
 
@@ -22,11 +24,13 @@ void main() {
 
 class MyApp extends StatefulWidget {
   final AuthRepository authRepository;
+  final ServiceRepository serviceRepository;
 
 
   const MyApp(
       {Key? key,
         required this.authRepository,
+        required this.serviceRepository,
        })
       : super(key: key);
 
@@ -46,6 +50,10 @@ class _MyAppState extends State<MyApp> {
       providers: [
         RepositoryProvider<AuthRepository>.value(
           value: widget.authRepository,
+
+        ),
+        RepositoryProvider<ServiceRepository>.value(
+          value: widget.serviceRepository,
         ),
 
       ],
@@ -60,7 +68,7 @@ class _MyAppState extends State<MyApp> {
 
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
-        initialRoute: AppRouter.login,
+        initialRoute: AppRouter.splash,
         onGenerateRoute: AppRouter.onGenerateRoute,
         onGenerateInitialRoutes: (String initialRouteName) {
           return [

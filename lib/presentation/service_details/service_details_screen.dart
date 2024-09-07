@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:just_fix_it/data/models/api_response/service.dart';
+import 'package:just_fix_it/presentation/home/service_item_view.dart';
 import 'package:just_fix_it/shared/components/gap.dart';
 import 'package:just_fix_it/shared/extensions/context_extensions.dart';
 
 class ServiceDetailsScreen extends StatelessWidget {
-  const ServiceDetailsScreen({super.key});
+  final Service service;
+  const ServiceDetailsScreen(this.service, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,23 +31,23 @@ class ServiceDetailsScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Image
-                    Image.asset('assets/images/cleaning_banner.jpg'), // Replace with your image path
-                    SizedBox(height: 20),
+                    ImageItem(image: service.image ?? ""),
+                    const SizedBox(height: 20),
 
                     // Title and Subtitle
-                    Text('Plumbing Services', style: context.textTheme.titleMedium),
+                    Text(service.name ??"", style: context.textTheme.titleMedium),
                     Text('Jim\'s Plumbing', style: context.textTheme.bodyMedium),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
                     // Description
                     Container(
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         color: Colors.grey.shade200,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
-                        'No matter the type emergency or time of day or night, we can have a plumber at your home quickly to assist. Our 24/7 emergency plumbing service is available across Sydney, Melbourne, Brisbane and Adelaide.',
+                        service.description ??'No matter the type emergency or time of day or night, we can have a plumber at your home quickly to assist. Our 24/7 emergency plumbing service is available across Sydney, Melbourne, Brisbane and Adelaide.',
                         style: context.textTheme.bodyMedium,
                       ),
                     ),

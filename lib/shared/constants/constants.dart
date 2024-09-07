@@ -15,7 +15,12 @@ const String login_appleBtnLabel= "Sign in with Apple";
 const String login_submitBtnLabel= "Login";
 const String signup_submitBtnLabel= "Signup";
 const String signup_fullnameLabel= "FullName";
+const String signup_addressLabel= "Address";
 const String signup_confirmPassLabel= "Confirm Password";
+
+const String edit_updateBtnLabel= "Update";
+const String service_addBtnLabel= "Add Service";
+
 
 const String loadingDialog_content= "Please wait...";
 
@@ -106,6 +111,7 @@ const kDecorationBottomLeftCorner55 = BoxDecoration(
 const kDecorationBottomLeftTopRightCorner55 = BoxDecoration(
     borderRadius: BorderRadius.only(
         bottomLeft: Radius.circular(35), topRight: Radius.circular(35)));
+
 
 
 const kTextStyleBoldLarge = TextStyle(

@@ -18,12 +18,12 @@ class ServiceListPage extends StatelessWidget {
               },
             ),
           ),
-      body: const SingleChildScrollView(
+      body:  SingleChildScrollView(
         child: Column(
           children: [
-            ServiceItemView(image: "assets/images/cleaning_banner.jpg"),
-            ServiceItemView(image: "assets/images/plumbing_1.png"),
-            ServiceItemView(),
+            ServiceItemView(image: "assets/images/cleaning_banner.jpg", onPress: () {  },),
+            ServiceItemView(image: "assets/images/plumbing_1.png", onPress: () {  },),
+            ServiceItemView(onPress: () {  },),
           ],
         ),
       ),

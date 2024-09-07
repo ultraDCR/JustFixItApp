@@ -6,10 +6,12 @@ import 'package:just_fix_it/core/routing/app_router.dart';
 import 'package:just_fix_it/core/theme/dimens.dart';
 import 'package:just_fix_it/data/network_service.dart';
 import 'package:just_fix_it/data/repositories/auth_repository.dart';
-import 'package:just_fix_it/domain/cubit/auth/login/login_cubit.dart';
+import 'package:just_fix_it/domain/cubit/login/login_cubit.dart';
 import 'package:just_fix_it/shared/components/buttons/button.dart';
+import 'package:just_fix_it/shared/components/dialogs/dialog_builder.dart';
 import 'package:just_fix_it/shared/components/forms/input.dart';
 import 'package:just_fix_it/shared/components/gap.dart';
+import 'package:just_fix_it/shared/components/snack_bar/my_app_snackbar.dart';
 import 'package:just_fix_it/shared/constants/constants.dart';
 import 'package:just_fix_it/shared/extensions/context_extensions.dart';
 
@@ -47,6 +49,15 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
+        if (state is LoginSuccessful) {
+
+          Navigator.of(context).popAndPushNamed( (state.authData["user_type"] == "provider") ? AppRouter.providerDashboard : AppRouter.home) ;
+        } else if (state is LoginError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              myAppSnackBar(
+                  message: state.message,
+                  snackBarType: SnackBarType.error));
+        }
         // state.whenOrNull(
         //     loading: (email, password) => LoadingDialog.show(context: context),
         //     success: (email, password, response) => LoadingDialog.hide(context: context),
@@ -62,11 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Gap.vertical(height: Dimens.tripleSpacing),
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Colors.green.shade100,
-                    child: Image.asset('assets/logo.png'), // replace with your logo image
-                  ),
+                  Image.asset('assets/images/logo.png',width: 80,),
                   SizedBox(height: 20),
             
                   // SignUp Text
@@ -91,6 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             labelText: login_emailLabel,
                             hintText:  login_emailHint,
                             onChanged: (l){},
+                            keyboardType: TextInputType.emailAddress,
                             textInputAction: TextInputAction.next,
                           ),
                           const Gap.vertical(height: Dimens.spacing),
@@ -100,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             isPassword: !_isPasswordVisible,
                             labelText:  login_passwordLabel,
                             hintText:  login_passwordHint,
-                            onChanged: (l){},
+                              onChanged: (l){},
                             textInputAction: TextInputAction.done,
                             suffixIcon: IconButton(
                               onPressed: () => setState(() => _isPasswordVisible = !_isPasswordVisible),
@@ -160,5 +168,5 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _onLogin() => context.read<LoginCubit>().loginUser(email: "email", password: "password");
+  void _onLogin() => context.read<LoginCubit>().loginUser(email: _emailController.text, password: _passwordController.text);
 }

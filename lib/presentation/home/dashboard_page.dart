@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_fix_it/core/routing/app_router.dart';
+import 'package:just_fix_it/data/repositories/auth_repository.dart';
+import 'package:just_fix_it/data/repositories/service_repository.dart';
+import 'package:just_fix_it/domain/cubit/home/home_cubit.dart';
+import 'package:just_fix_it/domain/cubit/profile/profile_cubit.dart';
 import 'package:just_fix_it/presentation/service/services_page.dart';
 import 'package:just_fix_it/presentation/home/home_page.dart';
 import 'package:just_fix_it/presentation/profile/profile_page.dart';
@@ -10,14 +15,13 @@ class DashboardPage extends StatefulWidget {
 
   const DashboardPage({super.key});
 
-
   @override
   State<DashboardPage> createState() => _DashboardPageState();
 }
 
 class _DashboardPageState extends State<DashboardPage> {
   List<Widget> pages = [
-    HomePage(),
+    const HomePage(),
     ServicesScreen(),
     ProfileScreen(),
   ];
@@ -116,7 +120,21 @@ class _DashboardPageState extends State<DashboardPage> {
           ],
         ),
       ),
-      body:pages[pageSelected],
+
+      body:MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (_) => HomeCubit(
+                 serviceRepository: context.read<ServiceRepository>(),
+              ),
+            ),
+            BlocProvider(
+              create: (_) => ProfileCubit(
+                 authRepository: context.read<AuthRepository>(),
+              ),
+            ),
+          ],
+      child: pages[pageSelected]),
     );
   }
 }
