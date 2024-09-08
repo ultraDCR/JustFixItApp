@@ -16,7 +16,7 @@ class ApiBaseHelper {
       if (kDebugMode) {
         print("Url: $url");
       }
-      // print("api token : $token");
+      print("api token : $token");
       Map<String, String> header = {"Accept": "application/json"};
       if (token != null) {
         header[paramAuthorization] = "Bearer $token";
@@ -150,7 +150,7 @@ class ApiBaseHelper {
       };
 
       final response = await http.patch(Uri.parse(baseUrl + url),
-          body: jsonEncode(body), headers: headers);
+           headers: headers);
       responseJson = _returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
@@ -385,14 +385,20 @@ const baseUrl = "http://192.168.1.4:3001/";
 
 
 //EndPoints
+const imageUrl = "${baseUrl}api/services/image/";
 const homeAPI = "api/home";
 const getCurrentUserAPI = "api/user/currentuserdata";
 const updateCurrentUserAPI = "api/user/updatecurrentuser";
 const loginAPI = "api/auth/login";
 const signupAPI = "api/auth/signup";
 const servicesAPI = "api/services";
-const createRequestAPI = "api/createrequest";
-const imageUrl = "${baseUrl}api/services/image/";
+const searchServiceByCategoryAPI = "api/services/searchServiceByCategory";
+const searchServiceAPI = "api/services/searchService";
+const serviceRequestHistoryAPI = "api/request/requestHistory";
+const providerServiceRequestAPI = "api/request/viewYourRequest";
+const createRequestAPI = "api/request/createrequest";
+const approveRequestAPI = "api/request/approveRequest";
+const cancelRequestAPI = "api/request/cancelRequest";
 
 
 
@@ -405,8 +411,10 @@ const paramAddress = "address";
 const paramAddressTitle = "title";
 const paramCityId = "city_id";
 const paramIsDefault = "is_default";
-const paramName = "fullname";
+const paramFullName = "fullname";
+const paramName = "name";
 const paramDescription = "description";
+const paramCategory = "category";
 const paramPrice = "price";
 const paramImage = "image";
 const paramPhone = "phone";
@@ -421,5 +429,5 @@ const paramFcmToken = "fcm_token";
 const paramInitialCode = "initial_code";
 const paramPasswordConfirmation = "password_confirmation";
 const paramPlatform = 'platform';
-const paramServiceId = 'serviceId';
+const paramServiceId = 'service_id';
 const paramStatus = 'status';

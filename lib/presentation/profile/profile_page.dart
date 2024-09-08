@@ -91,15 +91,21 @@ class ProfileScreen extends StatelessWidget {
                             leadingIcon: Icons.message_outlined,
                             title: "Faq",
                             onTap: () {
-                              // Navigator.pushNamed(context, AppRouter.serviceHistory);
+                              Navigator.pushNamed(context, AppRouter.faq);
                             }),
                         CommonButton(
                             leadingIcon: Icons.support_agent,
-                            title: "Support", onTap: () {}
+                            title: "Support", onTap: () {
+                          Navigator.pushNamed(context, AppRouter.support);
+
+                        }
                         ),
                         CommonButton(
                             leadingIcon:  Icons.policy,
-                            title: "Terms And Conditions", onTap: () {}
+                            title: "Terms And Conditions", onTap: () {
+                          Navigator.pushNamed(context, AppRouter.termsAndConditions);
+
+                        }
                         ),
                       ],
                     ),

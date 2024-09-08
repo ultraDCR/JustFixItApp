@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:just_fix_it/presentation/home/dashboard_page.dart';
+import 'package:just_fix_it/presentation/home/home_page.dart';
 import 'package:just_fix_it/shared/components/gap.dart';
 import 'package:just_fix_it/shared/extensions/context_extensions.dart';
 
+import '../../core/routing/app_router.dart';
+
 class ServicesScreen extends StatelessWidget {
+  List<Services> services = [
+    Services(name: "Plumbing", icon: 'assets/images/plumbing.png'),
+    Services(name: "Electricity", icon: 'assets/images/electric.png'),
+    Services(name: "Cleaning", icon: 'assets/images/cleaning.png'),
+  ];
   @override
   Widget build(BuildContext context) {
     return  Column(
@@ -29,21 +37,15 @@ class ServicesScreen extends StatelessWidget {
           child: ListView(
             padding: const EdgeInsets.all(16.0),
             children: [
+    ...services.map((service) =>
               ServiceTile(
-                icon: "assets/images/plumbing.png",
-                title: 'Plumbing',
-                onTap: () {},
-              ),
-              ServiceTile(
-                icon: "assets/images/electric.png",
-                title: 'Electricity',
-                onTap: () {},
-              ),
-              ServiceTile(
-                icon: "assets/images/cleaning.png",
-                title: 'Cleaning',
-                onTap: () {},
-              ),
+                icon: service.icon,
+                title: service.name,
+                onTap: () {
+                  Navigator.pushNamed(
+                      context,AppRouter.serviceList ,arguments: service.name);
+                },
+              ),)
             ],
           ),
         ),

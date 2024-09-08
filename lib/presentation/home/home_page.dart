@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
                         child: InkWell(
                           onTap:(){
                             Navigator.pushNamed(
-                                context,AppRouter.serviceList);
+                                context,AppRouter.serviceList ,arguments: e.name);
                           },
                           child: Card(
                             color: Colors.white,

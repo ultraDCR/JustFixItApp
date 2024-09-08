@@ -1,5 +1,7 @@
 
+import 'package:auto_route/auto_route.dart';
 import 'package:just_fix_it/data/api_helper.dart';
+import 'package:just_fix_it/shared/constants/enums.dart';
 
 class NetworkService {
   static NetworkService? _instance;
@@ -33,7 +35,7 @@ class NetworkService {
 
   }) async {
     var signupResponse = await _helper.post(url: signupAPI, body: {
-      paramName: name,
+      paramFullName: name,
       paramPassword: password,
       paramUserType: userType,
       paramAddress: address,
@@ -56,7 +58,7 @@ class NetworkService {
           url: updateCurrentUserAPI,
           body: {
             paramAddress : address,
-            paramName: name
+            paramFullName: name
           }
       );
       return userResponse;
@@ -66,14 +68,14 @@ class NetworkService {
      required String serviceId,
      required String status,
     }) async {
-      var userResponse = await _helper.patch(
+      var requestResponse = await _helper.post(
           url: createRequestAPI,
           body: {
             paramServiceId : serviceId,
-            paramStatus: status
+            // paramStatus: status
           }
       );
-      return userResponse;
+      return requestResponse;
     }
 
   Future<dynamic> getServices() async {
@@ -96,14 +98,17 @@ class NetworkService {
     required String description,
     required String price,
     required String image,
+    required ServiceCategory category,
 
   }) async {
-    var signupResponse = await _helper.post(url: servicesAPI, body: {
+    var signupResponse = await _helper.multiPartPost(url: servicesAPI, body: {
       paramName: name,
       paramDescription: description,
+      paramCategory: category.name,
       paramPrice: price,
-      paramImage: image,
-    });
+    },
+      files: [image], paramFile: 'image',
+    );
     return signupResponse;
   }
 
@@ -113,6 +118,7 @@ class NetworkService {
     String? description,
     String? price,
     String? image,
+    ServiceCategory? category,
   }) async {
     var queryUrl = Uri(
         path: servicesAPI,
@@ -123,6 +129,7 @@ class NetworkService {
           if (name != null) paramName: name,
           if (description != null) paramDescription: description,
           if (price != null) paramPrice: price,
+          if (image != null) paramImage: image,
           if (image != null) paramImage: image,
         }
     );
@@ -137,6 +144,52 @@ class NetworkService {
       url: queryUrl.toString(),
     );
     return serviceList;
+  }
+
+
+  Future<dynamic> searchServices({String? serviceName}) async {
+
+    var serviceResponse = await _helper.post(url: searchServiceAPI,
+        body: {
+          "query" : serviceName
+        }
+    );
+    return serviceResponse;
+  }
+
+ Future<dynamic> searchServicesByCategory({required String serviceType}) async {
+
+    var serviceResponse = await _helper.post(url: searchServiceByCategoryAPI, body: {"query": serviceType });
+    return serviceResponse;
+  }
+
+
+ Future<dynamic> getServiceRequestHistory() async {
+
+    var serviceResponse = await _helper.get(url: serviceRequestHistoryAPI);
+    return serviceResponse;
+  }
+
+
+
+ Future<dynamic> getProviderServiceRequest() async {
+
+    var serviceResponse = await _helper.get(url: providerServiceRequestAPI);
+    return serviceResponse;
+  }
+
+
+ Future<dynamic> approveServiceRequest({required String requestId}) async {
+   var url = "$approveRequestAPI/$requestId";
+
+    var serviceResponse = await _helper.patch(url: url);
+    return serviceResponse;
+  }
+
+ Future<dynamic> cancelServiceRequest({required String requestId}) async {
+    var url = "$cancelRequestAPI/$requestId";
+    var serviceResponse = await _helper.patch(url: url );
+    return serviceResponse;
   }
 
 

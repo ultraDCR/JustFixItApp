@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_fix_it/data/models/api_response/service.dart';
+import 'package:just_fix_it/domain/cubit/serviceDetails/service_details_cubit.dart';
 import 'package:just_fix_it/presentation/home/service_item_view.dart';
 import 'package:just_fix_it/shared/components/gap.dart';
+import 'package:just_fix_it/shared/components/snack_bar/my_app_snackbar.dart';
 import 'package:just_fix_it/shared/extensions/context_extensions.dart';
 
 class ServiceDetailsScreen extends StatelessWidget {
@@ -10,7 +13,21 @@ class ServiceDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BlocListener<ServiceDetailsCubit, ServiceDetailsState>(
+      listener: (context, state) {
+        if (state is ServiceRequestSuccessful) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              myAppSnackBar(
+                  message: "Your Request was successfully sent",
+                  snackBarType: SnackBarType.success));
+        } else if (state is ServiceDetailsError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              myAppSnackBar(
+                  message: state.message,
+                  snackBarType: SnackBarType.error));
+        }
+      },
+  child: Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green.shade700,
         title: Text('Plumbing Services',style: context.textTheme.titleMedium,),
@@ -36,7 +53,7 @@ class ServiceDetailsScreen extends StatelessWidget {
 
                     // Title and Subtitle
                     Text(service.name ??"", style: context.textTheme.titleMedium),
-                    Text('Jim\'s Plumbing', style: context.textTheme.bodyMedium),
+                    // Text(service.id, style: context.textTheme.bodyMedium),
                     const SizedBox(height: 20),
 
                     // Description
@@ -93,6 +110,7 @@ class ServiceDetailsScreen extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       // Add request logic here
+                      context.read<ServiceDetailsCubit>().requestForService(serviceId: service.id ??"");
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green.shade700,
@@ -108,7 +126,8 @@ class ServiceDetailsScreen extends StatelessWidget {
 
         ],
       ),
-    );
+    ),
+);
   }
 
 }

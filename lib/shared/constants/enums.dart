@@ -6,6 +6,11 @@ enum UserType {
   customer,
   provider,
 }
+enum ServiceCategory {
+  Plumbing,
+  Cleaning,
+  Electricity,
+}
 
 
 
